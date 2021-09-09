@@ -1,41 +1,26 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using BurgerBackend.Review.Service.Services.Models;
 
 namespace BurgerBackend.Review.Service.Repositories
 {
-    public interface IReviewInMemoryRepository
-    {
-        void Add(VenueReview venueReview);
-        VenueReview Get(Guid venueId, Guid id);
-        bool Delete(Guid venueId, Guid id);
-        IEnumerable<VenueReview> GetAll(Guid venueId, int top, int skip);
-    }
-
-
     public class ReviewInMemoryRepository : IReviewInMemoryRepository
     {
-        private readonly List<VenueReview> _venueReviews = new();
+        private readonly ConcurrentDictionary<Guid, VenueReview> _venueReviews = new();
 
-        public void Add(VenueReview venueReview) => _venueReviews.Add(venueReview);
+        public bool Add(VenueReview venueReview) => _venueReviews.TryAdd(venueReview.Id, venueReview);
 
-        public VenueReview Get(Guid venueId, Guid id) => _venueReviews.FirstOrDefault(r => r.VenueId == venueId && r.Id == id);
+        public VenueReview Get(Guid id) => _venueReviews.TryGetValue(id, out var review) ? review : null;
 
-        public bool Delete(Guid venueId, Guid id)
-        {
-            var review = _venueReviews.FirstOrDefault(r => r.VenueId == venueId && r.Id == id);
-            
-            if (review != null)
-            {
-                _venueReviews.Remove(review);
-                return true;
-            }
+        public bool Delete(Guid id) => _venueReviews.TryRemove(id, out _);
 
-            return false;
-        }
-
-        public IEnumerable<VenueReview> GetAll(Guid venueId, int top, int skip)
-            => _venueReviews.Where(r => r.VenueId == venueId).OrderBy(r => r.Id).Skip(skip).Take(top);
+        public IEnumerable<VenueReview> GetAll(Guid venueId, int top, int skip) => _venueReviews
+            .Where(r => r.Value.VenueId == venueId)
+            .OrderBy(r => r.Key)
+            .Select(r => r.Value)
+            .Skip(skip)
+            .Take(top);
     }
 }

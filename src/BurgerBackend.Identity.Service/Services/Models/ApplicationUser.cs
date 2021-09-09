@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace IdentityService.Domain
+namespace BurgerBackend.Identity.Service.Services.Models
 {
     internal sealed class ApplicationUser
     {

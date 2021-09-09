@@ -19,14 +19,14 @@ namespace BurgerFinderService.Controllers
         }
 
         [HttpGet("api/find/zip")]
-        public IEnumerable<BurgerShop> FindByZip([FromQuery] IEnumerable<string> zip)
+        public IEnumerable<BurgerShop> FindByZip([FromQuery] IEnumerable<string> zip, [FromQuery] int? top, [FromQuery] int? skip)
         {
             if (zip?.Any() != true)
             {
                 throw new BadHttpRequestException("Missing zip code argument list.");
             }
 
-            return _burgerShopService.GetShopListByZipCode(zip);
+            return _burgerShopService.GetShopListByZipCode(zip, top.GetValueOrDefault(20), skip.GetValueOrDefault());
         }
 
         [HttpGet("api/find")]

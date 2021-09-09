@@ -30,15 +30,15 @@ namespace BurgerBackend.Review.Service.Controllers
             return Ok(_reviewService.AddReview(venueId, request, user));
         }
 
-        [HttpGet("api/venue/{venueId}/review/{id}")]
-        public IActionResult GetReview(Guid venueId, Guid id)
+        [HttpGet("api/venue/review/{id}")]
+        public IActionResult GetReview(Guid id)
         {
-            var review = _reviewService.GetReview(venueId, id);
+            var review = _reviewService.GetReview(id);
             return review != null ? Ok(review) : NotFound();
         }
 
-        [HttpPut("api/venue/{venueId}/review/{id}")]
-        public IActionResult UpdateReview(Guid venueId, Guid id, UpdateReviewRequest request)
+        [HttpPut("api/venue/review/{id}")]
+        public IActionResult UpdateReview(Guid id, UpdateReviewRequest request)
         {
             var user = GetUser();
             if (user == null) return Unauthorized();
@@ -47,12 +47,12 @@ namespace BurgerBackend.Review.Service.Controllers
             if (request.TextureScore is < 0 or > 5) return BadRequest($"{ nameof(request.TextureScore) } value should be between 0 and 5.");
             if (request.VisualScore is < 0 or > 5) return BadRequest($"{ nameof(request.VisualScore) } value should be between 0 and 5.");
 
-            return _reviewService.UpdateReview(venueId, id, request, user) ? Ok() : NotFound();
+            return _reviewService.UpdateReview(id, request, user) ? Ok() : NotFound();
         }
 
-        [HttpDelete("api/venue/{venueId}/review/{id}")]
-        public IActionResult DeleteReview(Guid venueId, Guid id)
-            => _reviewService.DeleteReview(venueId, id) ? Ok() : NotFound();
+        [HttpDelete("api/venue/review/{id}")]
+        public IActionResult DeleteReview(Guid id)
+            => _reviewService.DeleteReview(id) ? Ok() : NotFound();
 
         [HttpGet("api/venue/{venueId}/reviews")]
         public IActionResult GetReviews(Guid venueId, [FromQuery] int? top, [FromQuery] int? skip)
@@ -70,8 +70,8 @@ namespace BurgerBackend.Review.Service.Controllers
             throw new NotImplementedException();
         }
 
-        [HttpDelete("api/venue/{venueId}/picture/{id}")]
-        public IActionResult DeletePicture(Guid venueId, Guid id)
+        [HttpDelete("api/venue/picture/{id}")]
+        public IActionResult DeletePicture(Guid id)
         {
             throw new NotImplementedException();
         }

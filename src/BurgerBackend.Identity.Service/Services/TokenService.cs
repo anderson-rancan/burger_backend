@@ -4,7 +4,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using BurgerBackend.Identity.Service.Config;
-using IdentityService.Domain;
+using BurgerBackend.Identity.Service.Services.Models;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 

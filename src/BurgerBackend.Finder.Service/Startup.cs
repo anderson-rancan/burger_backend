@@ -1,6 +1,7 @@
 using System;
 using BurgerBackend.Finder.Service.Config;
 using BurgerBackend.Finder.Service.ExternalServices;
+using BurgerBackend.Finder.Service.Repositories;
 using BurgerBackend.Identity.Client.Middlewares;
 using BurgerBackend.Identity.Client.Services;
 using Microsoft.AspNetCore.Builder;
@@ -25,7 +26,8 @@ namespace BurgerFinderService
         public void ConfigureServices(IServiceCollection services) => services
             .AddControllers()
             .Services
-            .AddSingleton<IBurgerShopService, BurgerShopService>() // TODO singleton because it's in memory, should be refactored to a real repository
+            .AddSingleton<IBurgerShopRepository, BurgerShopRepository>() // TODO singleton because it's in memory, should be refactored to a real repository
+            .AddScoped<IBurgerShopService, BurgerShopService>() 
             .Configure<AppSettings>(Configuration.GetSection(nameof(AppSettings)))
             .AddCustomSwagger()
             .AddHttpClient<IAccountService, AccountService>((sp, cl) => cl.BaseAddress = new Uri(sp.GetRequiredService<IOptions<AppSettings>>().Value.IdentityServiceUrl));

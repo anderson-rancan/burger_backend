@@ -1,5 +1,5 @@
 ﻿using System;
-using IdentityService.Domain;
+using BurgerBackend.Identity.Service.Services.Models;
 
 namespace IdentityService.Repositories
 {

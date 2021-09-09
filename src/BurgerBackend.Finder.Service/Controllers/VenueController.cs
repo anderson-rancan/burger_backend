@@ -22,8 +22,7 @@ namespace BurgerBackend.Finder.Service.Controllers
             var user = GetUser();
             if (user == null) return Unauthorized();
 
-            _burgerShopService.Add(request, user);
-            return Ok();
+            return Ok(_burgerShopService.Add(request, user));
         }
 
         [HttpGet("api/venue/{id}")]

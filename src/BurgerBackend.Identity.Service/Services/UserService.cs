@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using BurgerBackend.Identity.Interface.Exceptions;
 using BurgerBackend.Identity.Interface.Services.Models;
-using IdentityService.Domain;
+using BurgerBackend.Identity.Service.Services.Models;
 using IdentityService.Repositories;
 
 namespace BurgerBackend.Identity.Service.Services
